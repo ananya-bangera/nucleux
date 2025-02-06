@@ -1,0 +1,36 @@
+{
+    "name": "ai-agent-sdk",
+    "description": "Monorepo for AI Agent SDK",
+    "workspaces": [
+        "packages/ai-agent-sdk",
+        "packages/create-zee-app",
+        "docs/"
+    ],
+    "scripts": {
+        "build": "pnpm run -r build",
+        "clean": "pnpm run -r clean",
+        "test": "pnpm run -r test",
+        "lint": "pnpm run -r lint",
+        "format": "prettier --write ."
+    },
+    "author": "covalenthq",
+    "homepage": "https://cxt.build/docs/overview",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/covalenthq/ai-agent-sdk.git"
+    },
+    "bugs": {
+        "url": "https://github.com/covalenthq/ai-agent-sdk/issues"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@eslint/eslintrc": "^3.2.0",
+        "@eslint/js": "^9.19.0",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@typescript-eslint/eslint-plugin": "^8.20.0",
+        "@typescript-eslint/parser": "^8.20.0",
+        "eslint": "^9.18.0",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-prettier": "^5.1.3"
+    }
+}

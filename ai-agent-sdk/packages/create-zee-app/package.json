@@ -1,0 +1,49 @@
+{
+    "name": "@covalenthq/create-zee-app",
+    "version": "0.2.5",
+    "description": "Create a new ZEE application to run your own autonomous agents.",
+    "type": "module",
+    "bin": {
+        "create-zee-app": "bin/create-zee-app"
+    },
+    "files": [
+        "dist",
+        "templates",
+        "README.md"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf dist",
+        "dev": "tsc --watch",
+        "start": "node dist/index.js",
+        "prepublishOnly": "npm run clean && npm run build",
+        "pretty": "prettier . --write",
+        "lint": "eslint .",
+        "test": "echo \"No tests specified\""
+    },
+    "author": "covalenthq",
+    "homepage": "https://cxt.build/docs/overview",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/covalenthq/ai-agent-sdk.git"
+    },
+    "bugs": {
+        "url": "https://github.com/covalenthq/ai-agent-sdk/issues"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^22.10.7",
+        "typescript": "^5.7.3"
+    },
+    "dependencies": {
+        "@clack/prompts": "^0.9.1",
+        "@types/fs-extra": "^11.0.0",
+        "fs-extra": "^11.0.0",
+        "gradient-string": "^3.0.0",
+        "ora": "^7.0.1",
+        "picocolors": "^1.1.1"
+    }
+}

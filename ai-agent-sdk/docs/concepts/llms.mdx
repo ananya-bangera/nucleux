@@ -1,0 +1,133 @@
+---
+title: LLMs
+description: Overview of supported language models, including OpenAI, Anthropic, and Google Gemini, Grok, and more.
+icon: "computer-classic"
+---
+
+Each LLM is an adapter around a language model provider and the specific model version, eg: `gpt-4o-mini`. Each [Agent](./agents) can pick their own model and a [ZeeWorkflow](./zeeworkflows) can be configured to use a specific LLM as default.
+
+```tsx
+const llm = new LLM({
+    provider: "OPEN_AI",
+    name: "gpt-4o-mini",
+    apiKey: process.env.OPENAI_API_KEY,
+    temperature: 0.7
+});
+```
+
+## List of supported LLMs
+
+### Open AI
+
+<CodeGroup>
+
+```plaintext OpenAI
+"gpt-4"
+"gpt-4-turbo"
+"gpt-3.5-turbo"
+"gpt-4o"
+"gpt-4o-mini"
+"o3-mini"
+```
+
+```plaintext DeepSeek
+"deepseek-chat"
+"deepseek-coder"
+```
+
+```plaintext Grok
+"grok-2-latest"
+"grok-beta"
+```
+
+```plaintext Gemini
+"gemini-1.5-flash"
+"gemini-1.5-pro"
+```
+
+</CodeGroup>
+
+## Environment Variables
+
+<CodeGroup>
+
+```plaintext OpenAI
+OPENAI_API_KEY
+```
+
+```plaintext DeepSeek
+DEEPSEEK_API_KEY
+```
+
+```plaintext Grok
+GROK_API_KEY
+```
+
+```plaintext Gemini
+GEMINI_API_KEY
+```
+
+</CodeGroup>
+
+## Use Cases
+
+### Image Analysis
+
+LLMs can also process images along with text using image URL messages. Here's an example of analyzing an image using the LLM:
+
+```typescript
+const messages = [
+    {
+        role: "user",
+        content: [
+            {
+                type: "text",
+                text: "What's in this image? Analyze the logo and suggest improvements.",
+            },
+            {
+                type: "image_url",
+                image_url: {
+                    url: "https://example.com/logo.png",
+                    detail: "auto",
+                },
+            },
+        ],
+    },
+];
+
+const schema = {
+    analysis: z.object({
+        description: z.string(),
+        colors: z.array(z.string()),
+        text_content: z.string().optional(),
+        improvements: z.string().optional(),
+    }),
+};
+
+const result = await llm.generate(messages, schema, {});
+```
+
+The LLM will analyze the image and return a structured response containing the description, colors used, and potential improvements. You can also use base64-encoded images by providing the data URL:
+
+```typescript
+const messages = [
+    {
+        role: "user",
+        content: [
+            {
+                type: "text",
+                text: "What's in this image and what color is it?",
+            },
+            {
+                type: "image_url",
+                image_url: {
+                    url: "data:image/png;base64,..." // Your base64 image data
+                    detail: "auto",
+                },
+            },
+        ],
+    },
+];
+```
+
+Note: Image analysis is currently supported by OpenAI models. Some providers like Gemini may have limited or no support for image analysis.
