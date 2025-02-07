@@ -30,6 +30,8 @@ const runTools = async (zeeWorkflow, context, state) => {
     return results;
 };
 const execute = async (zeeWorkflow, context, state) => {
+    console.log("*****Executing******");
+    // console.log(state.messages);
     if (state.messages.length > zeeWorkflow.maxIterations) {
         return state_1.StateFn.childState({
             ...state,
@@ -62,6 +64,7 @@ const execute = async (zeeWorkflow, context, state) => {
             messages: [...state.messages, ...toolsResponse],
         };
     }
+    // console.log(zeeWorkflow._agents)
     const agent = zeeWorkflow.agent(state.agent);
     if (state.status === "running" || state.status === "idle") {
         try {
@@ -78,13 +81,14 @@ class ZeeWorkflow extends base_1.Base {
     config;
     constructor(options) {
         super("zee");
-        console.log("^^^^^^^^^^^^^^^^^^^^^^");
-        console.log(options.agents);
+        // console.log("^^^^^^^^^^^^^^^^^^^^^^");
+        // console.log(options.agents);
         this._agents = {
-            router: (0, agent_1.router)(),
-            resource_planner: (0, agent_1.resource_planner)(options.agents),
+            [process.env["ROUTER_NAME"]]: (0, agent_1.router)(),
+            [process.env["RESOURCE_PLANNER_NAME"]]: (0, agent_1.resource_planner)(options.agents),
             ...options.agents,
         };
+        console.log(this._agents);
         this.config = options;
     }
     get description() {
@@ -99,7 +103,9 @@ class ZeeWorkflow extends base_1.Base {
     agent(agentName) {
 
         const maybeAgent = this._agents[agentName];
-        // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+        // console.log("&&&&&&&&
+        // &&&&&&&&&&&&&&")
+        console.log(this.agents)
         console.log(agentName)
         if (maybeAgent) {
             return maybeAgent;
@@ -112,12 +118,12 @@ class ZeeWorkflow extends base_1.Base {
         const statusText = state.children.length > 0
             ? ""
             : (() => {
-                if (state.agent === "router-pfhrob" &&
+                if (state.agent === process.env["ROUTER_NAME"] &&
                     (state.status === "idle" ||
                         state.status === "running")) {
                     return "Looking for next task...";
                 }
-                if (state.agent === "resource_planner") {
+                if (state.agent === process.env["RESOURCE_PLANNER_NAME"]) {
                     return "Looking for best agent...";
                 }
                 switch (state.status) {
@@ -135,9 +141,11 @@ class ZeeWorkflow extends base_1.Base {
                 }
             })();
         console.log(`${indent}${arrow}${state.agent} ${depth == 0 ? "(" + state.messages.length + ")" : ""} ${statusText}`);
+        // console.log(`state childeren : ${state.children}`);
         state.children.forEach((child) => ZeeWorkflow.printState(child, depth + 1));
     };
     static async iterate(zeeWorkflow, state) {
+        // console.log(`zeee state: ${zeeWorkflow._agents}`);
         const nextState = await execute(zeeWorkflow, [], state);
         ZeeWorkflow.printState(nextState);
         return nextState;

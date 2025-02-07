@@ -143,8 +143,9 @@ const router = () => new Agent({
                 throw new Error("Expected next_task response, got " + result.type);
             }
             if (result.value["task"]) {
+                
                 const nextState = state_1.StateFn.assign(state, [
-                    ["resource_planner", (0, base_1.user)(result.value["task"])],
+                    [ process.env["RESOURCE_PLANNER_NAME"], (0, base_1.user)(result.value["task"])],
                 ]);
                 return nextState;
             }
