@@ -5,8 +5,8 @@ const z = require("zod");
 
 app.get('/', async (req, res) => {
     const portfolio_analyst = new Agent({
-        name: AGENT_1_NAME,
-        basicAuth: AGENT_1_AUTH,
+        name:  process.env["AGENT_1_NAME"],
+        basicAuth: process.env["AGENT_1_AUTH"],
         model: {
             provider: "NUCLEUX",
             name: "eliza",
@@ -18,16 +18,16 @@ app.get('/', async (req, res) => {
             ],
     });
     const transaction_analyst = new Agent({
-        name: AGENT_2_NAME,
-        basicAuth: AGENT_2_AUTH,
+        name: process.env["AGENT_2_NAME"],
+        basicAuth: process.env["AGENT_2_AUTH"],
         model: {
             provider: "NUCLEUX",
             name: "eliza",
         },
         description:
-                "You are a fashion designer",
+                "You are a weather analyst",
             instructions: [
-                "Provide a comprehensive overview of the latest designs",
+                "Provide a comprehensive overview of the recent weather changes",
             ],
     });
     const schema = {
@@ -37,8 +37,8 @@ app.get('/', async (req, res) => {
         }),
     };
     const zee = new ZeeWorkflow({
-        description: "How the fashion sense will progress",
-        output: "A comprehensive report on thetrending designs and branded materials",
+        description: "How the weather looks today",
+        output: "A comprehensive report on the changing weather",
         agents: { portfolio_analyst, transaction_analyst },
     });
     const result = await ZeeWorkflow.run(zee);

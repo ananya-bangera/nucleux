@@ -14,7 +14,7 @@ exports.StateFn = {
     },
     root: (workflowDescription) => {
         return exports.StateFn.childState({
-            agent: "router",
+            agent: process.env["ROUTER_NAME"],
             messages: [
                 (0, base_1.user)(`Here is a description of my workflow: ${workflowDescription}`),
             ],

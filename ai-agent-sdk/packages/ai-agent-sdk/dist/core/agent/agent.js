@@ -95,8 +95,8 @@ const defaultFn = async (agent, state) => {
     return nextState;
 };
 const router = () => new Agent({
-    name: ROUTER_NAME,
-    basicAuth: ROUTER_AUTH,
+    name: process.env["ROUTER_NAME"],
+    basicAuth: process.env["ROUTER_AUTH"],
     description: "You are a router that oversees the workflow.",
     model: {
         provider: "NUCLEUX",
@@ -160,8 +160,8 @@ const router = () => new Agent({
 });
 exports.router = router;
 const resource_planner = (agents) => new Agent({
-    name: RESOURCE_PLANNER_NAME,
-    basicAuth: RESOURCE_PLANNER_AUTH,
+    name: process.env["RESOURCE_PLANNER_NAME"],
+    basicAuth: process.env["RESOURCE_PLANNER_AUTH"],
     description: "You are a resource planner.",
     model: {
         provider: "NUCLEUX",
