@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useAccount, useChainId } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "./ui/button";
+import Chat from "./chat";
+import Animation from "./animation";
 
 
 
 const Home = ({ chainid, betid, contractAddress }) => {
-  // State management
+
   const [betAmount, setBetAmount] = useState("");
   const [email, setEmail] = useState("");
   const [twitter, setTwitter] = useState("");
@@ -22,12 +24,9 @@ const Home = ({ chainid, betid, contractAddress }) => {
     // }
   ]);
 
-  // Wagmi hooks
   const { address, isConnected } = useAccount();
   const currentChainId = useChainId();
 
-
-  // Network check render
   if (
     isConnected &&
     chainid !== undefined &&
@@ -97,10 +96,10 @@ const Home = ({ chainid, betid, contractAddress }) => {
         <div className="bg-purple-600 rounded-xl border-4 border-black shadow-custom">
           <div className="grid grid-cols-3 justify-items-center gap-4">
             <div className="col-span-1">
-              {/* <GamingChat messages={messages} setMessages={setMessages} /> */}
+              <Chat messages={messages} setMessages={setMessages} />
             </div>
             <div className="col-span-2">
-              {/* <ChatWidget messages={messages} setMessages={setMessages} /> */}
+              <Animation messages={messages} setMessages={setMessages} />
             </div>
           </div>
         </div>
