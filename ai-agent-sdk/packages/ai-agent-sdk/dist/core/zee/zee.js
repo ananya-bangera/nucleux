@@ -103,8 +103,6 @@ class ZeeWorkflow extends base_1.Base {
     agent(agentName) {
 
         const maybeAgent = this._agents[agentName];
-        // console.log("&&&&&&&&
-        // &&&&&&&&&&&&&&")
         console.log(this.agents)
         console.log(agentName)
         if (maybeAgent) {
