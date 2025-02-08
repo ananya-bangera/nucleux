@@ -58,8 +58,7 @@ app.get('/', async (req, res) => {
         }),
     };
     const zee = new ZeeWorkflow({
-        description: "Effects of water pollution on weather patterns", 
-        output: "A comprehensive overview on the current weather",
+        description: "What's the weather like in Mumbai during June",
         agents: { [process.env["AGENT_1_NAME"]]:portfolio_analyst, [process.env["AGENT_2_NAME"]]:weather_analyst },
     });
     const result = await ZeeWorkflow.run(zee);

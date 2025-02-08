@@ -103,15 +103,15 @@ class LLM extends base_1.Base {
                             'Content-Type': 'application/json',
                             'Authorization': `Basic ${encodedBasicAuth}`
                         },
-                        body: JSON.stringify({ text: `${messages[0].content}` })
+                        body: JSON.stringify({ text: `${messages}` })
                     });
                     if (!res2.ok) {
                         throw new Error(`Error: ${res2.statusText}`);
                     }
                     const data2 = await res2.json();
 
-                    console.log({agent: agentName,message: data2[0].text,type: agentName.includes("router")?"next_task":"select_agent", value:{"task":agentName.includes("router")?messages[0].content:data2[0].text}});
-                    return {agent: agentName,message: data2[0].text,type: agentName.includes("router")?"next_task":"select_agent", value:{"task":agentName.includes("router")?messages[0].content:data2[0].text}};
+                    console.log({agent: agentName,message: data2[0].text,type: agentName.includes("router")?"next_task":"select_agent", value:{"task":agentName.includes("router")?messages:data2[0].text}});
+                    return {agent: agentName,message: data2[0].text,type: agentName.includes("router")?"next_task":"select_agent", value:{"task":agentName.includes("router")?messages:data2[0].text}};
                 }
                 else {
                     console.log('Agent ID not found');
