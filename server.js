@@ -7,6 +7,7 @@ app.get('/', async (req, res) => {
     const portfolio_analyst = new Agent({
         name: process.env["AGENT_1_NAME"],
         basicAuth: process.env["AGENT_1_AUTH"],
+        count: 1,
         model: {
             provider: "NUCLEUX",
             name: "eliza",
@@ -23,6 +24,7 @@ app.get('/', async (req, res) => {
         schema: z.object({
             temperature: z.number(),
         }),
+        count: 1,
         execute: async (_args) => {
             const lat = 49.2827,
                 lon = -123.1207;

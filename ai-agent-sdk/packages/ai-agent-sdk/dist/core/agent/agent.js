@@ -212,10 +212,12 @@ const resource_planner = (agents) => new Agent({
         };
         const result = await agent.generate(messages, schema);
         
-        Object.entries(agents)
+        agents = Object.entries(agents)
             .map(([name, agent]) => {if(result.message.includes(name)){
+                if(agent.count !== 0){
                 result.value.agent = name;
-            }})
+                agent.count = agent.count - 1;
+            }}});
         
         if (result.type !== "select_agent") {
             throw new Error("Expected select_agent response, got " + result.type);
@@ -228,11 +230,13 @@ class Agent extends base_1.Base {
     config;
     llm;
     _tools;
+    count;
     constructor(config) {
         super("agent");
         this.config = config;
         this.llm = new llm_1.LLM(config.model);
         this._tools = config.tools || {};
+        this.count = config.count || 0;
     }
     get description() {
         return this.config.description;
