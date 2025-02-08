@@ -33,7 +33,7 @@ export const Navbar = () => {
           <Link href="/" className="flex items-center gap-2">
             <img src="/logo.png" className="h-8 w-auto sm:h-12" alt="Logo" />
             <p className="text-xl sm:text-3xl font-heading tracking-tight">
-              Fomo Wallet
+              Nucleux
             </p>
           </Link>
 

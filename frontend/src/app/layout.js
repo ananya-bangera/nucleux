@@ -17,7 +17,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: "Fomo Wallet - Bet on the Future of CryptoCurrency",
+  title: "Nucleux",
   description: "Let the bet begin!",
   icons: {
     icon: "./favicon.ico",

@@ -3,15 +3,31 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Animation({ messages, setMessages }) {
   const [chapter, setchapter] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  var text = `I' am Mia, your personal assistant. I will guide you through the process of swapping, briding and exchanging your tokens. Let's get started!`;
+  var speed = 50;
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < (text.length-1)) {
+        setDisplayText((prev) => prev + text[i]);
+        console.log(text[i]);
+        i++;
+      } else {
+        clearInterval(interval);
+       
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, speed]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-400/20 to-teal-500/20 p-6">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* Main Tutorial Section */}
         <Card className="relative overflow-hidden h-max border-2 bg-pink-500 border-teal-500/20">
           <CardContent className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-2 gap-8 items-center">
@@ -33,11 +49,11 @@ export default function Animation({ messages, setMessages }) {
                   alt="Hero image"
                 />
                 <div className="absolute top-4 right-4 bg-white/90 rounded-lg p-4 shadow-lg max-w-xs">
-                  <p className="text-sm font-medium text-teal-800">"Got it! I’ll find the most optimal way for you. Let me check the best route…"</p>
+                  <p className="text-sm font-medium text-teal-800">{displayText}</p>
                 </div>
               </div>
 
-              {/* Students Section */}
+              {/* Agents Section */}
               {chapter % 2 === 1 && <div className="grid grid-cols-2 gap-4">
                 <div className="relative">
                   <img
