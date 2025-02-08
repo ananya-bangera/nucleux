@@ -5,17 +5,17 @@ const z = require("zod");
 
 app.get('/', async (req, res) => {
     const portfolio_analyst = new Agent({
-        name:  process.env["AGENT_1_NAME"],
+        name: process.env["AGENT_1_NAME"],
         basicAuth: process.env["AGENT_1_AUTH"],
         model: {
             provider: "NUCLEUX",
             name: "eliza",
         },
         description:
-                "Description: Manages disaster response and mitigation by assessing risks, coordinating emergency teams, and deploying resources effectively. Specialization: Crisis management, real-time risk assessment, and logistics coordination. Model Capabilities: Utilizes predictive analytics, geospatial data, and AI-driven simulations to enhance disaster preparedness and response.",
-            instructions: [
-                "Provide a comprehensive overview of the latest dress materials",
-            ],
+            "Description: Manages disaster response and mitigation by assessing risks, coordinating emergency teams, and deploying resources effectively. Specialization: Crisis management, real-time risk assessment, and logistics coordination. Model Capabilities: Utilizes predictive analytics, geospatial data, and AI-driven simulations to enhance disaster preparedness and response.",
+        instructions: [
+            "Provide a comprehensive overview of the latest dress materials",
+        ],
     });
     const weather = createTool({
         id: "weather-tool",
@@ -45,11 +45,11 @@ app.get('/', async (req, res) => {
             name: "eliza",
         },
         description:
-                "Description: Gathers real-time weather data (temperature, humidity, wind speed, atmospheric pressure) from sensors, satellites, and APIs. Specialization: API integration, web scraping, real-time data processing. Model Capabilities: Uses external APIs (e.g., OpenWeather, NOAA) and machine learning techniques for data filtering.",
-            instructions: [
-                "Provides current weather forecast",
-            ],
-            tools: [weather],
+            "Description: A cryptocurrency swap expert that analyzes and executes optimal token swaps based on real-time market conditions. It evaluates liquidity pools, slippage, gas fees, and trade execution risks across multiple decentralized and centralized exchanges. Specialization: Smart contract interaction, on- chain data analysis, market depth evaluation, and alternative liquidity sourcing in case of disruptions. Model Capabilities: Uses external APIs(e.g., 1inch, Uniswap, Paraswap) and direct on - chain queries to assess trade feasibility, identify best execution paths, and mitigate risks such as front - running and impermanent loss",
+        instructions: [
+            "Provides cryptocurrency swap analysis",
+        ],
+        tools: [weather],
     });
     const schema = {
         article: z.object({
@@ -58,8 +58,8 @@ app.get('/', async (req, res) => {
         }),
     };
     const zee = new ZeeWorkflow({
-        description: "What's the weather like in Mumbai during June",
-        agents: { [process.env["AGENT_1_NAME"]]:portfolio_analyst, [process.env["AGENT_2_NAME"]]:weather_analyst },
+        description: "I'm the CFO of a global fintech company, and our primary cryptocurrency liquidity provider has suddenly gone offline due to a major cyberattack. I have two AI agents: one specializes in cryptocurrency swaps, and the other in disaster recovery management. By working together, can you develop a structured response plan to ensure uninterrupted crypto swaps? The swap expert should assess available decentralized and alternative liquidity sources, while the disaster recovery expert should evaluate risk mitigation, contingency measures, and potential regulatory implications. Discuss viable fallback strategies, weigh the trade- offs of each approach, and ensure a clear, actionable conclusion that minimizes financial disruption without excessive delays or risk exposure.",
+        agents: { [process.env["AGENT_1_NAME"]]: portfolio_analyst, [process.env["AGENT_2_NAME"]]: weather_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
 
@@ -73,7 +73,7 @@ app.get('/', async (req, res) => {
 
     // const result = await agent.run();
     // console.log(result);
-    res.send({response: result});
+    res.send({ response: result });
 });
 
 // Start the server

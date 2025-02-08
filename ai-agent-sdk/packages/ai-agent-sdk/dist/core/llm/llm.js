@@ -41,7 +41,7 @@ class LLM extends base_1.Base {
         super("llm");
         this.model = model;
     }
-    async generate(messages, response_schema, tools,agentName,basicAuth) {
+    async generate(messages, response_schema, tools, agentName, basicAuth) {
         const config = {
             apiKey: this.model.apiKey,
         };
@@ -70,7 +70,7 @@ class LLM extends base_1.Base {
                     process.env["GEMINI_API_KEY"] || this.model.apiKey;
                 break;
             case "NUCLEUX":
-                config.baseURL = "https://autonome.alt.technology/"+agentName;
+                config.baseURL = "https://autonome.alt.technology/" + agentName;
                 config.apiKey =
                     process.env["NUCLEUX_API_KEY"] || this.model.apiKey;
                 break;
@@ -79,7 +79,7 @@ class LLM extends base_1.Base {
                 throw new Error(`Unhandled model provider: ${_exhaustiveCheck}`);
         }
         if (provider === "NUCLEUX") {
-            
+
             const apiUrl = `https://autonome.alt.technology/${agentName}`;
             console.log(agentName);
             const encodedBasicAuth = btoa(basicAuth);
@@ -103,15 +103,15 @@ class LLM extends base_1.Base {
                             'Content-Type': 'application/json',
                             'Authorization': `Basic ${encodedBasicAuth}`
                         },
-                        body: JSON.stringify({ text: `${messages}` })
+                        body: JSON.stringify({ text: `${JSON.stringify(messages)}` })
                     });
                     if (!res2.ok) {
                         throw new Error(`Error: ${res2.statusText}`);
                     }
                     const data2 = await res2.json();
 
-                    console.log({agent: agentName,message: data2[0].text,type: agentName.includes("router")?"next_task":"select_agent", value:{"task":agentName.includes("router")?messages:data2[0].text}});
-                    return {agent: agentName,message: data2[0].text,type: agentName.includes("router")?"next_task":"select_agent", value:{"task":agentName.includes("router")?messages:data2[0].text}};
+                    console.log({ agent: agentName, message: data2[0].text, type: agentName.includes("router") ? "next_task" : (agentName.includes("alex") ? "select_agent" : "end"), value: { "task": agentName.includes("router") ? JSON.stringify(messages) : data2[0].text } });
+                    return { agent: agentName, message: data2[0].text, type: agentName.includes("router") ? "next_task" : (agentName.includes("alex") ? "select_agent" : "end"), value: { "task": agentName.includes("router") ? JSON.stringify(messages) : data2[0].text } };
                 }
                 else {
                     console.log('Agent ID not found');

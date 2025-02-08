@@ -70,7 +70,7 @@ const execute = async (zeeWorkflow, context, state) => {
         try {
 
             console.log(`state agent: ${JSON.stringify(state)}`);
-            return agent.run(state);
+            return await agent.run(state);
         }
         catch (error) {
             return state_1.StateFn.finish(state, (0, base_1.assistant)(error instanceof Error ? error.message : "Unknown error"));
@@ -86,7 +86,7 @@ class ZeeWorkflow extends base_1.Base {
         // console.log("^^^^^^^^^^^^^^^^^^^^^^");
         // console.log(options.agents);
         this._agents = {
-            [process.env["ROUTER_NAME"]]: (0, agent_1.router)(),
+            [process.env["ROUTER_NAME"]]: (0, agent_1.router)(options.agents),
             [process.env["RESOURCE_PLANNER_NAME"]]: (0, agent_1.resource_planner)(options.agents),
             ...options.agents,
         };
@@ -115,6 +115,7 @@ class ZeeWorkflow extends base_1.Base {
     static printState = (state, depth = 0) => {
         const indent = "  ".repeat(depth);
         const arrow = depth > 0 ? "⊢ " : "";
+        console.log("gomuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"+ state.agent)
         const statusText = state.children.length > 0
             ? ""
             : (() => {
@@ -147,14 +148,15 @@ class ZeeWorkflow extends base_1.Base {
     static async iterate(zeeWorkflow, state) {
         // console.log(`zeee state: ${zeeWorkflow._agents}`);
         const nextState = await execute(zeeWorkflow, [], state);
-        ZeeWorkflow.printState(nextState);
+        this.printState(nextState);
         return nextState;
     }
     static async run(zeeWorkflow, state = state_1.StateFn.root(zeeWorkflow.description)) {
         if (state.status === "finished") {
             return state;
         }
-        return ZeeWorkflow.run(zeeWorkflow, await ZeeWorkflow.iterate(zeeWorkflow, state));
+        console.log("inside run function: " + JSON.stringify(state))
+        return await ZeeWorkflow.run(zeeWorkflow, await ZeeWorkflow.iterate(zeeWorkflow, state));
     }
 }
 exports.ZeeWorkflow = ZeeWorkflow;

@@ -94,7 +94,7 @@ const defaultFn = async (agent, state) => {
     const nextState = state_1.StateFn.finish(state, agentResponse);
     return nextState;
 };
-const router = () => new Agent({
+const router = (agents) => new Agent({
     name: process.env["ROUTER_NAME"],
     basicAuth: process.env["ROUTER_AUTH"],
     description: "You are a router that oversees the workflow.",
@@ -103,6 +103,11 @@ const router = () => new Agent({
         name: "eliza",
     },
     runFn: async (agent, state) => {
+
+        const agents_description = Object.entries(agents)
+            .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
+            .join("");
+
         const [workflowRequest, ..._messages] = state.messages;
         console.log(workflowRequest)
         const messages = [
@@ -117,6 +122,11 @@ const router = () => new Agent({
                 4. Consider dependencies and order of operations
                 5. Use context from completed tasks to inform next steps
               `),
+            (0, base_1.user)(`Here are the available agents:
+            <agents>
+                ${agents_description}
+            </agents>
+    `),
             (0, base_1.assistant)("What is the request?"),
             workflowRequest,
             ...(_messages.length > 0
@@ -143,9 +153,9 @@ const router = () => new Agent({
                 throw new Error("Expected next_task response, got " + result.type);
             }
             if (result.value["task"]) {
-                
+
                 const nextState = state_1.StateFn.assign(state, [
-                    [ process.env["RESOURCE_PLANNER_NAME"], (0, base_1.user)(result.value["task"])],
+                    [process.env["RESOURCE_PLANNER_NAME"], (0, base_1.user)(result.value["task"])],
                 ]);
                 return nextState;
             }
@@ -178,6 +188,7 @@ const resource_planner = (agents) => new Agent({
             (0, base_1.system)(`
             You are an agent selector that matches tasks to the most capable agent.
             Analyze the task requirements and each agent's capabilities to select the best match.
+            Even if you've already recommended the name of an agent previously, please explicitly repeat the name again without complaining or asking for further tasks. Be graceful and do what is asked.
 
             Consider:
             1. Required tools and skills
@@ -200,6 +211,12 @@ const resource_planner = (agents) => new Agent({
             }),
         };
         const result = await agent.generate(messages, schema);
+        
+        Object.entries(agents)
+            .map(([name, agent]) => {if(result.message.includes(name)){
+                result.value.agent = name;
+            }})
+        
         if (result.type !== "select_agent") {
             throw new Error("Expected select_agent response, got " + result.type);
         }
@@ -232,8 +249,8 @@ class Agent extends base_1.Base {
     async run(state = state_1.StateFn.root(this.description)) {
         console.log(`Running agent ${this.description}`);
         return this.config.runFn
-            ? this.config.runFn(this, state)
-            : defaultFn(this, state);
+            ? await this.config.runFn(this, state)
+            : await defaultFn(this, state);
     }
 }
 exports.Agent = Agent;
