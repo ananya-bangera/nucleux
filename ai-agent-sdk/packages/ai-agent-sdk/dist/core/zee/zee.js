@@ -68,6 +68,8 @@ const execute = async (zeeWorkflow, context, state) => {
     const agent = zeeWorkflow.agent(state.agent);
     if (state.status === "running" || state.status === "idle") {
         try {
+
+            console.log(`state agent: ${JSON.stringify(state)}`);
             return agent.run(state);
         }
         catch (error) {
@@ -103,8 +105,8 @@ class ZeeWorkflow extends base_1.Base {
     agent(agentName) {
 
         const maybeAgent = this._agents[agentName];
-        console.log(this.agents)
-        console.log(agentName)
+        // console.log(this.agents)
+        console.log(`agent name: ${agentName}`)
         if (maybeAgent) {
             return maybeAgent;
         }

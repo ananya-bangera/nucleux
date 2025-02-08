@@ -16,7 +16,7 @@ exports.StateFn = {
         return exports.StateFn.childState({
             agent: process.env["ROUTER_NAME"],
             messages: [
-                (0, base_1.user)(`Here is a description of my workflow: ${workflowDescription}`),
+                (0, base_1.user)(`Here is a description of my objective: ${workflowDescription}`),
             ],
         });
     },

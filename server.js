@@ -12,7 +12,7 @@ app.get('/', async (req, res) => {
             name: "eliza",
         },
         description:
-                "You are a material supplier",
+                "Description: Manages disaster response and mitigation by assessing risks, coordinating emergency teams, and deploying resources effectively. Specialization: Crisis management, real-time risk assessment, and logistics coordination. Model Capabilities: Utilizes predictive analytics, geospatial data, and AI-driven simulations to enhance disaster preparedness and response.",
             instructions: [
                 "Provide a comprehensive overview of the latest dress materials",
             ],
@@ -45,7 +45,7 @@ app.get('/', async (req, res) => {
             name: "eliza",
         },
         description:
-                "You are a weather forecaster",
+                "Description: Gathers real-time weather data (temperature, humidity, wind speed, atmospheric pressure) from sensors, satellites, and APIs. Specialization: API integration, web scraping, real-time data processing. Model Capabilities: Uses external APIs (e.g., OpenWeather, NOAA) and machine learning techniques for data filtering.",
             instructions: [
                 "Provides current weather forecast",
             ],
@@ -58,9 +58,9 @@ app.get('/', async (req, res) => {
         }),
     };
     const zee = new ZeeWorkflow({
-        description: "Todays weather forecast",
+        description: "Effects of water pollution on weather patterns", 
         output: "A comprehensive overview on the current weather",
-        agents: { portfolio_analyst, weather_analyst },
+        agents: { [process.env["AGENT_1_NAME"]]:portfolio_analyst, [process.env["AGENT_2_NAME"]]:weather_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
 

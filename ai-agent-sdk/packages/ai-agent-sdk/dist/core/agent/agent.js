@@ -137,7 +137,7 @@ const router = () => new Agent({
             }),
         };
         const result = await agent.generate(messages, schema);
-        console.log("Router result", result);
+        console.log("Router result", JSON.stringify(result.value["task"]));
         try {
             if (result.type !== "next_task") {
                 throw new Error("Expected next_task response, got " + result.type);
@@ -172,6 +172,8 @@ const resource_planner = (agents) => new Agent({
         const agents_description = Object.entries(agents)
             .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
             .join("");
+        console.log(`Agents: ${JSON.stringify(agents_description)}`);
+        console.log(`Agents state: ${JSON.stringify(state)}`);
         const messages = [
             (0, base_1.system)(`
             You are an agent selector that matches tasks to the most capable agent.
@@ -228,6 +230,7 @@ class Agent extends base_1.Base {
         return this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
     }
     async run(state = state_1.StateFn.root(this.description)) {
+        console.log(`Running agent ${this.description}`);
         return this.config.runFn
             ? this.config.runFn(this, state)
             : defaultFn(this, state);

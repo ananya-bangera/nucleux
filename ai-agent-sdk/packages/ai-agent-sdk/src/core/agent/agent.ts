@@ -216,7 +216,7 @@ export const resource_planner = (agents: Record<AgentName, Agent>) =>
             const messages = [
                 system(`
             You are an agent selector that matches tasks to the most capable agent.
-            Analyze the task requirements and each agent's capabilities to select the best match.
+            Analyze the task requirements and each agent's capabilities to select the best match. Give tha answer as agent name. No other context is required
 
             Consider:
             1. Required tools and skills
@@ -283,6 +283,7 @@ export class Agent extends Base {
     }
 
     async run(state: ZeeWorkflowState = StateFn.root(this.description)) {
+        
         return this.config.runFn
             ? this.config.runFn(this, state)
             : defaultFn(this, state);
