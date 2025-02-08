@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { useAccount, useDisconnect } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import CreateBetSheet from "./createbet";
 import { MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
@@ -13,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import TwitterShareButton from "./intent";
+import Home from "./home";
 
 export const Navbar = () => {
   const { address, isConnected } = useAccount();
@@ -42,7 +41,6 @@ export const Navbar = () => {
             <Link href="/leaderboard">
               <p className="font-semibold hover:underline">Leaderboard</p>
             </Link>
-            <CreateBetSheet />
             <ConnectButton.Custom>
               {({
                 account,
@@ -75,11 +73,7 @@ export const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem className="focus:bg-gray-100">
-                  <div className="w-full">
-                    <CreateBetSheet />
-                  </div>
-                </DropdownMenuItem>
+      
                 <DropdownMenuItem className="focus:bg-gray-100" asChild>
                   <Link href="/leaderboard" className="w-full">
                     Leaderboard
@@ -155,6 +149,7 @@ const LandingPage = () => {
             />
           </div>
           {/* Home Page */}
+          <Home/>
         </div>
       </div>
     </main>
