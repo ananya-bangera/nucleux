@@ -13,7 +13,7 @@ app.get('/', async (req, res) => {
             name: "eliza",
         },
         description:
-            "Description: Manages disaster response and mitigation by assessing risks, coordinating emergency teams, and deploying resources effectively. Specialization: Crisis management, real-time risk assessment, and logistics coordination. Model Capabilities: Utilizes predictive analytics, geospatial data, and AI-driven simulations to enhance disaster preparedness and response.",
+            "Description: A specialist in transferring assets across different blockchains while ensuring speed, security, and cost efficiency. Identifies the best bridge solutions based on availability, liquidity, and potential risks. Specialization: Bridge protocol evaluation, security risk assessment, latency optimization, and cost analysis. Model Capabilities: Uses APIs and smart contract interactions with protocols like Stargate, Synapse, and Across to determine optimal cross- chain routes.Evaluates potential issues such as liquidity fragmentation, bridge delays, and attack vectors. ",
         instructions: [
             "Provide a comprehensive overview of the latest dress materials",
         ],
@@ -47,7 +47,7 @@ app.get('/', async (req, res) => {
             name: "eliza",
         },
         description:
-            "Description: A cryptocurrency swap expert that analyzes and executes optimal token swaps based on real-time market conditions. It evaluates liquidity pools, slippage, gas fees, and trade execution risks across multiple decentralized and centralized exchanges. Specialization: Smart contract interaction, on- chain data analysis, market depth evaluation, and alternative liquidity sourcing in case of disruptions. Model Capabilities: Uses external APIs(e.g., 1inch, Uniswap, Paraswap) and direct on - chain queries to assess trade feasibility, identify best execution paths, and mitigate risks such as front - running and impermanent loss",
+            "Description: A specialist in optimizing token swaps within the same blockchain. Analyzes liquidity pools, gas fees, slippage, and trade execution risks to ensure efficient swaps. Specialization: Smart contract interaction, on- chain liquidity assessment, market depth evaluation, and trade execution optimization. Model Capabilities: Uses APIs(e.g., 1inch, Uniswap, Paraswap) and direct on - chain queries to find the best swap routes while mitigating risks such as front - running and impermanent loss",
         instructions: [
             "Provides cryptocurrency swap analysis",
         ],
@@ -60,7 +60,7 @@ app.get('/', async (req, res) => {
         }),
     };
     const zee = new ZeeWorkflow({
-        description: "Due to unforeseen regulatory changes, a major centralized exchange has frozen all withdrawals and trading for certain crypto assets, causing significant market volatility. As the Head of Treasury for a global fintech firm, I need to ensure uninterrupted crypto liquidity for our users. Coordinate your findings, compare trade-offs, and present a clear, actionable strategy that maintains business continuity without excessive financial or legal exposure",
+        description: "A critical DeFi protocol on Ethereum has suffered a smart contract exploit, leading to a rapid drop in token value and liquidity depletion. Many users are looking to exit their positions or move funds to another blockchain before further losses occur. As the Treasury Lead of a Web3 investment firm, I must act quickly to protect our holdings and ensure minimal exposure to losses. The Swap Expert should analyze whether swapping the affected token for a stable asset on the same chain is feasible and efficient, considering slippage, gas fees, and liquidity availability. The Cross- Chain Bridge Expert should assess the best routes to move the funds to another blockchain, avoiding congestion, excessive fees, or compromised bridge protocols. Work together to devise a clear, structured action plan balancing execution speed, cost, and security while avoiding unnecessary risks or delays.",
         agents: { [process.env["AGENT_1_NAME"]]: portfolio_analyst, [process.env["AGENT_2_NAME"]]: weather_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
