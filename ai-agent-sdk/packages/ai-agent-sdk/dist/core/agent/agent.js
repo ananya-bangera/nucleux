@@ -102,7 +102,7 @@ const router = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 2,
+    count: 4,
     runFn: async (agent, state) => {
 
         const agents_description = Object.entries(agents)
@@ -110,7 +110,7 @@ const router = (agents) => new Agent({
             .join("");
 
         const [workflowRequest, ..._messages] = state.messages;
-        console.log(workflowRequest)
+        // console.log(workflowRequest)
         const messages = [
             (0, base_1.system)(`
                 You are a planner that breaks down complex workflows into smaller, actionable steps.
@@ -147,9 +147,9 @@ const router = (agents) => new Agent({
                     .describe("The reasoning for selecting the next task or why the workflow is complete"),
             }),
         };
-        agent.count--;
+        agent.count = agent.count - 1;
         const result = await agent.generate(messages, schema);
-        console.log("Router result", JSON.stringify(result.value["task"]));
+        // console.log("Router result", JSON.stringify(result.value["task"]));
         try {
             if (result.type !== "next_task") {
                 throw new Error("Expected next_task response, got " + result.type);
@@ -180,13 +180,13 @@ const resource_planner = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 2,
+    count: 4,
     runFn: async (agent, state) => {
         const agents_description = Object.entries(agents)
             .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
             .join("");
-        console.log(`Agents: ${JSON.stringify(agents_description)}`);
-        console.log(`Agents state: ${JSON.stringify(state)}`);
+        // console.log(`Agents: ${JSON.stringify(agents_description)}`);
+        // console.log(`Agents state: ${JSON.stringify(state)}`);
         const messages = [
             (0, base_1.system)(`
             You are an agent selector that matches tasks to the most capable agent.
@@ -214,14 +214,17 @@ const resource_planner = (agents) => new Agent({
             }),
         };
         const result = await agent.generate(messages, schema);
-        agent.count--;
+        agent.count = agent.count - 1;
         agents = Object.entries(agents)
-            .map(([name, agent]) => {if(result.message.includes(name)){
-                if(agent.count !== 0){
-                result.value.agent = name;
-                agent.count = agent.count - 1;
-            }}});
-        
+            .map(([name, agent]) => {
+                if (result.message.includes(name)) {
+                    if (agent.count !== 0) {
+                        result.value.agent = name;
+                        agent.count = agent.count - 1;
+                    }
+                }
+            });
+
         if (result.type !== "select_agent") {
             throw new Error("Expected select_agent response, got " + result.type);
         }
@@ -251,7 +254,8 @@ class Agent extends base_1.Base {
         return this._tools;
     }
     async generate(messages, response_schema) {
-        if(this.count === 0){
+        console.log(`The count of agent ${this.config.name} :==> ${this.count}`)
+        if (this.count === 0) {
             return {
                 type: "finished",
                 value: "Agent is finished"
@@ -260,7 +264,7 @@ class Agent extends base_1.Base {
         return this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
     }
     async run(state = state_1.StateFn.root(this.description)) {
-        console.log(`Running agent ${this.description}`);
+        // console.log(`Running agent ${this.description}`);
         return this.config.runFn
             ? await this.config.runFn(this, state)
             : await defaultFn(this, state);
