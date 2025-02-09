@@ -63,10 +63,15 @@ These enhancements make the Covalent SDK Zee **more powerful, developer-friendly
 
 ### Assets
 - [GitHub Repo](https://github.com/ananya-bangera/nucleux)
-- [Demo Video]()
+- [EthGlobal Submission Page](https://ethglobal.com/showcase/nucleux-aspdq)
 
 ## 🤖Tech-Stack
-
+- **Backend**: Node.js (Express) for the orchestration logic  
+- **Frontend**: React with TypeScript for the UI and interaction plugin    
+- **Blockchain & Agents**:  
+  - **Autonome** for deploying and managing agents  
+  - **Covalent SDK Zee** for fetching on-chain data  
+- **Orchestration Layer**: Custom-built using event-driven architecture  
 
 ## 🛠Project Setup
 
