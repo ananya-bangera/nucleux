@@ -70,7 +70,7 @@ These enhancements make the Covalent SDK Zee **more powerful, developer-friendly
 
 ## 🛠Project Setup
 
-To get FairPlayXI run locally, follow the steps below:
+To get Nucleux run locally, follow the steps below:
 
 1. Clone this repo & install dependencies
 
@@ -86,6 +86,11 @@ npm i
 cd frontend
 npm i
 npm run dev
+```
+
+3. Start your backend service:
+```
+node server.js
 ```
 
 
