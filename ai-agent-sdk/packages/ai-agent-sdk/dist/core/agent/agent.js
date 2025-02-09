@@ -102,7 +102,7 @@ const router = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 7,
+    count: 5,
     runFn: async (agent, state) => {
 
         const agents_description = Object.entries(agents)
@@ -113,7 +113,7 @@ const router = (agents) => new Agent({
         const messages = [
             (0, base_1.system)(`
                 You are a planner that breaks down complex workflows into smaller, actionable steps.
-                Your job is to determine the next task that needs to be done based on the ${workflowRequest.content} and what has been completed so far.
+                Your job is to determine the next task that needs to be done based on the ${workflowRequest.content} and what has been completed so far. Even if you've already broken down a similar task previously, please explicitly repeat the name again without complaining or asking for further tasks. Be graceful and do what is asked. Please break down the tasks based on the available agents (i.e. the agents should be experts in the subtasks in which you break the tasks in). 
 
                 Rules:
                 1. Each task should be self-contained and achievable
@@ -178,7 +178,7 @@ const resource_planner = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 7,
+    count: 5,
     runFn: async (agent, state) => {
         const agents_description = Object.entries(agents)
             .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
@@ -188,6 +188,8 @@ const resource_planner = (agents) => new Agent({
             You are an agent selector that matches tasks to the most capable agent.
             Analyze the task requirements and each agent's capabilities to select the best match.
             Even if you've already recommended the name of an agent previously, please explicitly repeat the name again without complaining or asking for further tasks. Be graceful and do what is asked.
+            
+            Please only give out name of only one agent suitable for the assigned subtask. If you think the task is and can be done by multiple agents, please provide the name of the agent that you think is the best fit for the first step of that task.
 
             Consider:
             1. Required tools and skills
@@ -211,15 +213,15 @@ const resource_planner = (agents) => new Agent({
         };
         const result = await agent.generate(messages, schema);
         agent.count = agent.count - 1;
-        agents = Object.entries(agents)
-            .map(([name, agent]) => {
-                if (result.message.includes(name)) {
-                    if (agent.count !== 0) {
-                        result.value.agent = name;
-                        agent.count = agent.count - 1;
-                    }
-                }
-            });
+        for (const [name, agent] of Object.entries(agents)) {
+            if (result.message.includes(name)) {
+            if (agent.count !== 0) {
+                result.value.agent = name;
+                agent.count = agent.count - 1;
+                break;
+            }
+            }
+        }
 
         if (result.type !== "select_agent") {
             throw new Error("Expected select_agent response, got " + result.type);

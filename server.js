@@ -50,7 +50,7 @@ app.get('/', async (req, res) => {
     });
 
     const zee = new ZeeWorkflow({
-        description: "A major financial crisis has hit multiple economies, causing rapid devaluation of certain fiat currencies. Many users are rushing to convert their fiat into stablecoins or other crypto assets to preserve value. However, due to high demand, some fiat on-ramps are experiencing delays, higher fees, or liquidity shortages. As the Treasury Lead for a fintech company, I need to ensure we can: Convert fiat into crypto efficiently without excessive fees or regulatory roadblocks. Swap assets effectively on- chain to reach the desired stablecoin or asset. Bridge funds across chains if better opportunities exist on other networks. Identify the best available fiat on-ramp solutions, factoring in liquidity, fees, compliance restrictions, and transaction speed. Analyze the most efficient token swap routes, considering liquidity pools, slippage, and gas fees. Evaluate cross-chain bridge protocols to determine the optimal route for asset transfers. Work together to develop a structured, actionable response plan that balances transaction speed, cost, security, and regulatory considerations—ensuring a conclusive solution without unnecessary delays or loops.",
+        description: "I want to sell 100 USDC on arbitrum and want the money to be credited to my bank account. I will follow all KYC/AML regulations to do the same. Please provide the best way to do so. Assume any information required, since I have no understanding.",
         agents: { [process.env["AGENT_1_NAME"]]: bridge_analyst, [process.env["AGENT_2_NAME"]]: swap_analyst, [process.env["AGENT_3_NAME"]]: exchange_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
