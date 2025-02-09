@@ -38,6 +38,20 @@
             {
                 "user": "{{user1}}",
                 "content": {
+                    "text": "I want to buy 100 xDAI on gnosis chain using my credit card"
+                }
+            },
+            {
+                "user": "Magnus",
+                "content": {
+                    "text": "Following workflow can be adopted: (1) Exchange AI agent suggests best way to buy ETH for ethereum mainnet on-ramp via fiat using an appropriate CEX/DEX. (2) Swapping AI agent suggests optimal route to swap ETH to DAI on the Ethereum Mainnet using an appropriate pool/protocol. (3) Bridge AI Agent suggests optimal way to bridge DAI on ethereum mainnet to xDAI on gnosis chain using an appropriate bridge."
+                }
+            }
+        ],
+        [
+            {
+                "user": "{{user1}}",
+                "content": {
                     "text": "Our customer service needs a complete overhaul."
                 }
             },

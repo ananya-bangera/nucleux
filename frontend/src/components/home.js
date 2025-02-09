@@ -71,7 +71,7 @@ const Home = ({ chainid, betid, contractAddress }) => {
                 Connect Your Wallet
               </h2>
               <p className="text-white mb-6 font-mono">
-                Please connect your wallet to start playing
+                Please connect your wallet to start transacting
               </p>
               <ConnectButton.Custom>
                 {({ openConnectModal }) => (
