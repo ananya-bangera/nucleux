@@ -102,6 +102,7 @@ const router = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
+    count: 2,
     runFn: async (agent, state) => {
 
         const agents_description = Object.entries(agents)
@@ -146,6 +147,7 @@ const router = (agents) => new Agent({
                     .describe("The reasoning for selecting the next task or why the workflow is complete"),
             }),
         };
+        agent.count--;
         const result = await agent.generate(messages, schema);
         console.log("Router result", JSON.stringify(result.value["task"]));
         try {
@@ -178,6 +180,7 @@ const resource_planner = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
+    count: 2,
     runFn: async (agent, state) => {
         const agents_description = Object.entries(agents)
             .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
@@ -211,7 +214,7 @@ const resource_planner = (agents) => new Agent({
             }),
         };
         const result = await agent.generate(messages, schema);
-        
+        agent.count--;
         agents = Object.entries(agents)
             .map(([name, agent]) => {if(result.message.includes(name)){
                 if(agent.count !== 0){
@@ -236,7 +239,7 @@ class Agent extends base_1.Base {
         this.config = config;
         this.llm = new llm_1.LLM(config.model);
         this._tools = config.tools || {};
-        this.count = config.count || 0;
+        this.count = config.count || 1;
     }
     get description() {
         return this.config.description;
@@ -248,6 +251,12 @@ class Agent extends base_1.Base {
         return this._tools;
     }
     async generate(messages, response_schema) {
+        if(this.count === 0){
+            return {
+                type: "finished",
+                value: "Agent is finished"
+            }
+        }
         return this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
     }
     async run(state = state_1.StateFn.root(this.description)) {

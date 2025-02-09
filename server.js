@@ -60,7 +60,7 @@ app.get('/', async (req, res) => {
         }),
     };
     const zee = new ZeeWorkflow({
-        description: "I'm the CFO of a global fintech company, and our primary cryptocurrency liquidity provider has suddenly gone offline due to a major cyberattack. I have two AI agents: one specializes in cryptocurrency swaps, and the other in disaster recovery management. By working together, can you develop a structured response plan to ensure uninterrupted crypto swaps? The swap expert should assess available decentralized and alternative liquidity sources, while the disaster recovery expert should evaluate risk mitigation, contingency measures, and potential regulatory implications. Discuss viable fallback strategies, weigh the trade- offs of each approach, and ensure a clear, actionable conclusion that minimizes financial disruption without excessive delays or risk exposure.",
+        description: "Due to unforeseen regulatory changes, a major centralized exchange has frozen all withdrawals and trading for certain crypto assets, causing significant market volatility. As the Head of Treasury for a global fintech firm, I need to ensure uninterrupted crypto liquidity for our users. Coordinate your findings, compare trade-offs, and present a clear, actionable strategy that maintains business continuity without excessive financial or legal exposure",
         agents: { [process.env["AGENT_1_NAME"]]: portfolio_analyst, [process.env["AGENT_2_NAME"]]: weather_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
