@@ -102,7 +102,7 @@ const router = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 2,
+    count: 7,
     runFn: async (agent, state) => {
 
         const agents_description = Object.entries(agents)
@@ -110,7 +110,6 @@ const router = (agents) => new Agent({
             .join("");
 
         const [workflowRequest, ..._messages] = state.messages;
-        // console.log(workflowRequest)
         const messages = [
             (0, base_1.system)(`
                 You are a planner that breaks down complex workflows into smaller, actionable steps.
@@ -149,7 +148,6 @@ const router = (agents) => new Agent({
         };
         agent.count = agent.count - 1;
         const result = await agent.generate(messages, schema);
-        // console.log("Router result", JSON.stringify(result.value["task"]));
         try {
             if (result.type !== "next_task") {
                 throw new Error("Expected next_task response, got " + result.type);
@@ -180,13 +178,11 @@ const resource_planner = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count:2,
+    count: 7,
     runFn: async (agent, state) => {
         const agents_description = Object.entries(agents)
             .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
             .join("");
-        // console.log(`Agents: ${JSON.stringify(agents_description)}`);
-        // console.log(`Agents state: ${JSON.stringify(state)}`);
         const messages = [
             (0, base_1.system)(`
             You are an agent selector that matches tasks to the most capable agent.
@@ -256,7 +252,6 @@ class Agent extends base_1.Base {
         return this._tools;
     }
     async generate(messages, response_schema) {
-        console.log(`The count of agent ${this.config.name} :==> ${this.count}`);
 
         if (this.count === 0 && (this.config.name === process.env["RESOURCE_PLANNER_NAME"] || this.config.name === process.env["ROUTER_NAME"])) {
             return {
@@ -265,12 +260,13 @@ class Agent extends base_1.Base {
             }
         }
         var resultVal = await this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
-        if(this.config.name !== process.env["RESOURCE_PLANNER_NAME"] && this.config.name !== process.env["ROUTER_NAME"]){this.response.push({agentName : resultVal.agent,  message: resultVal.message});
-        console.log(`The response of agent ${this.config.name} :==> ${JSON.stringify(this.response)}`);}
+        if (this.config.name !== process.env["RESOURCE_PLANNER_NAME"] && this.config.name !== process.env["ROUTER_NAME"]) {
+            this.response.push({ agentName: resultVal.agent, message: resultVal.message });
+            console.log(`The response of agent ${this.config.name} :==> ${JSON.stringify(this.response)}`);
+        }
         return resultVal;
     }
     async run(state = state_1.StateFn.root(this.description)) {
-        // console.log(`Running agent ${this.description}`);
         return this.config.runFn
             ? await this.config.runFn(this, state)
             : await defaultFn(this, state);

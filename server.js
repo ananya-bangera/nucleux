@@ -7,7 +7,7 @@ app.get('/', async (req, res) => {
     const bridge_analyst = new Agent({
         name: process.env["AGENT_1_NAME"],
         basicAuth: process.env["AGENT_1_AUTH"],
-        count: 1,
+        count: 2,
         model: {
             provider: "NUCLEUX",
             name: "eliza",
@@ -22,6 +22,7 @@ app.get('/', async (req, res) => {
     const swap_analyst = new Agent({
         name: process.env["AGENT_2_NAME"],
         basicAuth: process.env["AGENT_2_AUTH"],
+        count: 2,
         model: {
             provider: "NUCLEUX",
             name: "eliza",
@@ -36,6 +37,7 @@ app.get('/', async (req, res) => {
     const exchange_analyst = new Agent({
         name: process.env["AGENT_3_NAME"],
         basicAuth: process.env["AGENT_3_AUTH"],
+        count: 2,
         model: {
             provider: "NUCLEUX",
             name: "eliza",

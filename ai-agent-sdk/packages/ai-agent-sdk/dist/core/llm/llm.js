@@ -81,7 +81,6 @@ class LLM extends base_1.Base {
         if (provider === "NUCLEUX") {
 
             const apiUrl = `https://autonome.alt.technology/${agentName}`;
-            // console.log(agentName);
             const encodedBasicAuth = btoa(basicAuth);
             try {
                 const res = await fetch(`${apiUrl}/agents`, {
@@ -109,9 +108,6 @@ class LLM extends base_1.Base {
                         throw new Error(`Error: ${res2.statusText}`);
                     }
                     const data2 = await res2.json();
-
-                    // console.log({ agent: agentName, message: data2[0].text, type: agentName.includes("router") ? "next_task" : (agentName.includes(process.env["RESOURCE_PLANNER_NAME"]) ? "select_agent" : "end"), value: { "task": agentName.includes("router") ? JSON.stringify(messages) : data2[0].text } });
-                    console.log(agentName + ": " + data2[0].text)
 
                     return { agent: agentName, message: data2[0].text, type: agentName.includes("router") ? "next_task" : (agentName.includes(process.env["RESOURCE_PLANNER_NAME"]) ? "select_agent" : "end"), value: { "task": agentName.includes("router") ? JSON.stringify(messages) : data2[0].text } };
                 }

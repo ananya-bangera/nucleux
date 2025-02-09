@@ -31,7 +31,6 @@ const runTools = async (zeeWorkflow, context, state) => {
 };
 const execute = async (zeeWorkflow, context, state) => {
     console.log("*****Executing******");
-    // console.log(state.messages);
     if (state.messages.length > zeeWorkflow.maxIterations) {
         return state_1.StateFn.childState({
             ...state,
@@ -39,7 +38,6 @@ const execute = async (zeeWorkflow, context, state) => {
         });
     }
     if (state.children.length > 0) {
-        // console.log("zee start 0000000000000000000")
         const children = await Promise.all(state.children.map((child) => execute(zeeWorkflow, context.concat(state.messages), child)));
         if (children.every((child) => child.status === "finished")) {
             return {
@@ -64,12 +62,10 @@ const execute = async (zeeWorkflow, context, state) => {
             messages: [...state.messages, ...toolsResponse],
         };
     }
-    // console.log(zeeWorkflow._agents)
+
     const agent = zeeWorkflow.agent(state.agent);
     if (state.status === "running" || state.status === "idle") {
         try {
-
-            // console.log(`state agent: ${JSON.stringify(state)}`);
             return await agent.run(state);
         }
         catch (error) {
@@ -83,14 +79,11 @@ class ZeeWorkflow extends base_1.Base {
     config;
     constructor(options) {
         super("zee");
-        // console.log("^^^^^^^^^^^^^^^^^^^^^^");
-        // console.log(options.agents);
         this._agents = {
             [process.env["ROUTER_NAME"]]: (0, agent_1.router)(options.agents),
             [process.env["RESOURCE_PLANNER_NAME"]]: (0, agent_1.resource_planner)(options.agents),
             ...options.agents,
         };
-        // console.log(this._agents);
         this.config = options;
     }
     get description() {
@@ -105,8 +98,6 @@ class ZeeWorkflow extends base_1.Base {
     agent(agentName) {
 
         const maybeAgent = this._agents[agentName];
-        // console.log(this.agents)
-        // console.log(`agent name: ${agentName}`)
         if (maybeAgent) {
             return maybeAgent;
         }
@@ -115,7 +106,6 @@ class ZeeWorkflow extends base_1.Base {
     static printState = (state, depth = 0) => {
         const indent = "  ".repeat(depth);
         const arrow = depth > 0 ? "⊢ " : "";
-        // console.log("gomuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"+ state.agent)
         const statusText = state.children.length > 0
             ? ""
             : (() => {
@@ -142,11 +132,9 @@ class ZeeWorkflow extends base_1.Base {
                 }
             })();
         console.log(`${indent}${arrow}${state.agent} ${depth == 0 ? "(" + state.messages.length + ")" : ""} ${statusText}`);
-        // console.log(`state childeren : ${state.children}`);
         state.children.forEach((child) => ZeeWorkflow.printState(child, depth + 1));
     };
     static async iterate(zeeWorkflow, state) {
-        // console.log(`zeee state: ${zeeWorkflow._agents}`);
         const nextState = await execute(zeeWorkflow, [], state);
         this.printState(nextState);
         return nextState;
@@ -155,7 +143,6 @@ class ZeeWorkflow extends base_1.Base {
         if (state.status === "finished") {
             return state;
         }
-        // console.log("inside run function: " + JSON.stringify(state))
         return await ZeeWorkflow.run(zeeWorkflow, await ZeeWorkflow.iterate(zeeWorkflow, state));
     }
 }
