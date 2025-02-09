@@ -15,30 +15,10 @@ app.get('/', async (req, res) => {
         description:
             "Description: A specialist in transferring assets across different blockchains while ensuring speed, security, and cost efficiency. Identifies the best bridge solutions based on availability, liquidity, and potential risks. Specialization: Bridge protocol evaluation, security risk assessment, latency optimization, and cost analysis. Model Capabilities: Uses APIs and smart contract interactions with protocols like Stargate, Synapse, and Across to determine optimal cross- chain routes.Evaluates potential issues such as liquidity fragmentation, bridge delays, and attack vectors. ",
         instructions: [
-            "Provide a comprehensive overview of the latest dress materials",
+            "Provides cross-chain cryptocurrency bridging analysis",
         ],
     });
-    const weather = createTool({
-        id: "weather-tool",
-        description: "Fetch the current weather in Vancouver, BC",
-        schema: z.object({
-            temperature: z.number(),
-        }),
-        count: 1,
-        execute: async (_args) => {
-            const lat = 49.2827,
-                lon = -123.1207;
 
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-
-            const r = await fetch(url);
-            const data = await r.json();
-
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            return `Current temperature in Vancouver, BC is ${data.current_weather.temperature}°C`;
-        },
-    });
     const weather_analyst = new Agent({
         name: process.env["AGENT_2_NAME"],
         basicAuth: process.env["AGENT_2_AUTH"],
@@ -51,7 +31,6 @@ app.get('/', async (req, res) => {
         instructions: [
             "Provides cryptocurrency swap analysis",
         ],
-        tools: [weather],
     });
     const schema = {
         article: z.object({
