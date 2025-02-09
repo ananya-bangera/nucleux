@@ -4,7 +4,7 @@ const app = express();
 const z = require("zod");
 
 app.get('/', async (req, res) => {
-    const portfolio_analyst = new Agent({
+    const bridge_analyst = new Agent({
         name: process.env["AGENT_1_NAME"],
         basicAuth: process.env["AGENT_1_AUTH"],
         count: 1,
@@ -19,7 +19,7 @@ app.get('/', async (req, res) => {
         ],
     });
 
-    const weather_analyst = new Agent({
+    const swap_analyst = new Agent({
         name: process.env["AGENT_2_NAME"],
         basicAuth: process.env["AGENT_2_AUTH"],
         model: {
@@ -32,29 +32,28 @@ app.get('/', async (req, res) => {
             "Provides cryptocurrency swap analysis",
         ],
     });
-    const schema = {
-        article: z.object({
-            title: z.string(),
-            text: z.string(),
-        }),
-    };
+
+    const exchange_analyst = new Agent({
+        name: process.env["AGENT_3_NAME"],
+        basicAuth: process.env["AGENT_3_AUTH"],
+        model: {
+            provider: "NUCLEUX",
+            name: "eliza",
+        },
+        description:
+            "Description: A specialist in handling fiat-to-crypto and crypto-to-fiat transactions, ensuring users can efficiently move funds between traditional banking systems and blockchain networks. Specialization: Exchange liquidity evaluation, regulatory compliance, fiat on- ramping, off - ramping, and KYC / AML considerations. Model Capabilities: Integrates with platforms like MoonPay, Ramp, Wyre, and centralized exchanges(e.g., Binance, Coinbase, Kraken) to find the best routes for fiat conversion.Ensures compliance with jurisdictional restrictions and banking limitations while minimizing fees and transaction delays.",
+        instructions: [
+            "Provides fiat to cryptocurrency exchange analysis",
+        ],
+    });
+
     const zee = new ZeeWorkflow({
-        description: "A critical DeFi protocol on Ethereum has suffered a smart contract exploit, leading to a rapid drop in token value and liquidity depletion. Many users are looking to exit their positions or move funds to another blockchain before further losses occur. As the Treasury Lead of a Web3 investment firm, I must act quickly to protect our holdings and ensure minimal exposure to losses. The Swap Expert should analyze whether swapping the affected token for a stable asset on the same chain is feasible and efficient, considering slippage, gas fees, and liquidity availability. The Cross- Chain Bridge Expert should assess the best routes to move the funds to another blockchain, avoiding congestion, excessive fees, or compromised bridge protocols. Work together to devise a clear, structured action plan balancing execution speed, cost, and security while avoiding unnecessary risks or delays.",
-        agents: { [process.env["AGENT_1_NAME"]]: portfolio_analyst, [process.env["AGENT_2_NAME"]]: weather_analyst },
+        description: "A major financial crisis has hit multiple economies, causing rapid devaluation of certain fiat currencies. Many users are rushing to convert their fiat into stablecoins or other crypto assets to preserve value. However, due to high demand, some fiat on-ramps are experiencing delays, higher fees, or liquidity shortages. As the Treasury Lead for a fintech company, I need to ensure we can: Convert fiat into crypto efficiently without excessive fees or regulatory roadblocks. Swap assets effectively on- chain to reach the desired stablecoin or asset. Bridge funds across chains if better opportunities exist on other networks. Identify the best available fiat on-ramp solutions, factoring in liquidity, fees, compliance restrictions, and transaction speed. Analyze the most efficient token swap routes, considering liquidity pools, slippage, and gas fees. Evaluate cross-chain bridge protocols to determine the optimal route for asset transfers. Work together to develop a structured, actionable response plan that balances transaction speed, cost, security, and regulatory considerations—ensuring a conclusive solution without unnecessary delays or loops.",
+        agents: { [process.env["AGENT_1_NAME"]]: bridge_analyst, [process.env["AGENT_2_NAME"]]: swap_analyst, [process.env["AGENT_3_NAME"]]: exchange_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
 
-    // const result = await agent.generate([{
-    //     role: "user",
-    //     content: "Whats the future of AI in todays world?",
-    // }], schema);
-
-    console.log("///***///")
-    console.log(portfolio_analyst.response, weather_analyst.response);
-
-    // const result = await agent.run();
-    // console.log(result);
-    res.send({ response: [portfolio_analyst.response, weather_analyst.response] });
+    res.send({ response: [bridge_analyst.response, swap_analyst.response, exchange_analyst.response] });
 });
 
 // Start the server
