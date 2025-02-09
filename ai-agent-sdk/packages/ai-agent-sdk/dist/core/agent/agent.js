@@ -237,12 +237,14 @@ class Agent extends base_1.Base {
     llm;
     _tools;
     count;
+    response;
     constructor(config) {
         super("agent");
         this.config = config;
         this.llm = new llm_1.LLM(config.model);
         this._tools = config.tools || {};
         this.count = config.count || 1;
+        this.response = [];
     }
     get description() {
         return this.config.description;
@@ -254,14 +256,18 @@ class Agent extends base_1.Base {
         return this._tools;
     }
     async generate(messages, response_schema) {
-        console.log(`The count of agent ${this.config.name} :==> ${this.count}`)
-        if (this.count === 0) {
+        console.log(`The count of agent ${this.config.name} :==> ${this.count}`);
+
+        if (this.count === 0 && (this.config.name === process.env["RESOURCE_PLANNER_NAME"] || this.config.name === process.env["ROUTER_NAME"])) {
             return {
                 type: "finished",
                 value: "Agent is finished"
             }
         }
-        return this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
+        var resultVal = await this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
+        if(this.config.name !== process.env["RESOURCE_PLANNER_NAME"] && this.config.name !== process.env["ROUTER_NAME"])this.response.push({agentName : resultVal.agent,  message: resultVal.message});
+        console.log(`The response of agent ${this.config.name} :==> ${JSON.stringify(this.response)}`);
+        return resultVal;
     }
     async run(state = state_1.StateFn.root(this.description)) {
         // console.log(`Running agent ${this.description}`);

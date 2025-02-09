@@ -112,6 +112,7 @@ class LLM extends base_1.Base {
 
                     // console.log({ agent: agentName, message: data2[0].text, type: agentName.includes("router") ? "next_task" : (agentName.includes(process.env["RESOURCE_PLANNER_NAME"]) ? "select_agent" : "end"), value: { "task": agentName.includes("router") ? JSON.stringify(messages) : data2[0].text } });
                     console.log(agentName + ": " + data2[0].text)
+
                     return { agent: agentName, message: data2[0].text, type: agentName.includes("router") ? "next_task" : (agentName.includes(process.env["RESOURCE_PLANNER_NAME"]) ? "select_agent" : "end"), value: { "task": agentName.includes("router") ? JSON.stringify(messages) : data2[0].text } };
                 }
                 else {
