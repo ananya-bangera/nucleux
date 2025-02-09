@@ -102,7 +102,7 @@ const router = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 4,
+    count: 2,
     runFn: async (agent, state) => {
 
         const agents_description = Object.entries(agents)
@@ -180,7 +180,7 @@ const resource_planner = (agents) => new Agent({
         provider: "NUCLEUX",
         name: "eliza",
     },
-    count: 4,
+    count:2,
     runFn: async (agent, state) => {
         const agents_description = Object.entries(agents)
             .map(([name, agent]) => `<agent name="${name}">${agent.description}</agent>`)
@@ -265,8 +265,8 @@ class Agent extends base_1.Base {
             }
         }
         var resultVal = await this.llm.generate(messages, response_schema, this.tools, this.config.name, this.config.basicAuth);
-        if(this.config.name !== process.env["RESOURCE_PLANNER_NAME"] && this.config.name !== process.env["ROUTER_NAME"])this.response.push({agentName : resultVal.agent,  message: resultVal.message});
-        console.log(`The response of agent ${this.config.name} :==> ${JSON.stringify(this.response)}`);
+        if(this.config.name !== process.env["RESOURCE_PLANNER_NAME"] && this.config.name !== process.env["ROUTER_NAME"]){this.response.push({agentName : resultVal.agent,  message: resultVal.message});
+        console.log(`The response of agent ${this.config.name} :==> ${JSON.stringify(this.response)}`);}
         return resultVal;
     }
     async run(state = state_1.StateFn.root(this.description)) {

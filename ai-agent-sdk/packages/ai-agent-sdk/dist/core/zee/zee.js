@@ -131,7 +131,7 @@ class ZeeWorkflow extends base_1.Base {
                     case "idle":
                     case "running": {
                         const lastMessage = state.messages.at(-1);
-                        return `Working on: ${lastMessage?.content}`;
+                        return `Working on: `;
                     }
                     case "paused":
                         return "Paused";

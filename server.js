@@ -71,11 +71,11 @@ app.get('/', async (req, res) => {
     // }], schema);
 
     console.log("///***///")
-    console.log(result);
+    console.log(portfolio_analyst.response, weather_analyst.response);
 
     // const result = await agent.run();
     // console.log(result);
-    res.send({ response: result });
+    res.send({ response: [portfolio_analyst.response, weather_analyst.response] });
 });
 
 // Start the server
