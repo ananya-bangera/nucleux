@@ -1,9 +1,13 @@
 const express = require('express');
-const { ZeeWorkflow, Agent, createTool } = require('./ai-agent-sdk/packages/ai-agent-sdk/dist');
+const { ZeeWorkflow, Agent } = require('./ai-agent-sdk/packages/ai-agent-sdk/dist');
 const app = express();
-const z = require("zod");
+const cors = require('cors');
 
-app.get('/', async (req, res) => {
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/', async (req, res) => {
     const bridge_analyst = new Agent({
         name: process.env["AGENT_1_NAME"],
         basicAuth: process.env["AGENT_1_AUTH"],
@@ -50,7 +54,7 @@ app.get('/', async (req, res) => {
     });
 
     const zee = new ZeeWorkflow({
-        description: "I want to sell 100 USDC on arbitrum and want the money to be credited to my bank account. I will follow all KYC/AML regulations to do the same. Please provide the best way to do so. Assume any information required, since I have no understanding.",
+        description: req.body.description,
         agents: { [process.env["AGENT_1_NAME"]]: bridge_analyst, [process.env["AGENT_2_NAME"]]: swap_analyst, [process.env["AGENT_3_NAME"]]: exchange_analyst },
     });
     const result = await ZeeWorkflow.run(zee);
@@ -58,7 +62,6 @@ app.get('/', async (req, res) => {
     res.send({ response: [bridge_analyst.response, swap_analyst.response, exchange_analyst.response] });
 });
 
-// Start the server
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(3001, () => {
+    console.log('Server started on port 3001');
 });

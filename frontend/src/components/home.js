@@ -94,7 +94,7 @@ const Home = ({ chainid, betid, contractAddress }) => {
     <div className="pt-12">
       <div className="px-4 sm:px-16">
         <div className="bg-purple-600 rounded-xl border-4 border-black shadow-custom">
-          <div className="grid grid-cols-3 justify-items-center gap-4">
+          <div className="grid grid-cols-3 justify-items-center gap-4 items-center justify-center">
             <div className="col-span-1">
               <Chat messages={messages} setMessages={setMessages} />
             </div>
@@ -104,7 +104,6 @@ const Home = ({ chainid, betid, contractAddress }) => {
           </div>
         </div>
       </div>
-    
     </div>
   );
 };

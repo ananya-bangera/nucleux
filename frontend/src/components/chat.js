@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Gamepad2 } from "lucide-react";
+import { Send, Gamepad2, Coins } from "lucide-react";
 
-export default function Chat({messages, setMessages}) {
+export default function Chat({ messages, setMessages }) {
 
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
@@ -15,7 +15,7 @@ export default function Chat({messages, setMessages}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim()) {
-      const newMessage = input.trim();      
+      const newMessage = input.trim();
       setMessages([...messages, newMessage]);
       setInput("");
     }
@@ -24,20 +24,20 @@ export default function Chat({messages, setMessages}) {
   return (
     <div className="flex flex-col h-[900px] w-[500px] bg-yellow-400 rounded-lg overflow-hidden border-4 border-blue-500 shadow-lg">
       <div className="bg-blue-500 p-4 text-white font-bold text-xl flex items-center">
-        <Gamepad2 className="mr-2 text-pink-500" />
-        Game Chat
+        <Coins className="mr-2 text-pink-500" />
+        Chat
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-yellow-300 to-yellow-400">
         {messages.map((message, index) => (
           <div key={index} className="flex items-start space-x-2">
-            <img 
+            <img
               src="/Moana.png?height=40&width=40"
-              alt="Moana" 
-              className="w-10 h-10 rounded-full border-2 border-green-500" 
+              alt="User"
+              className="w-10 h-10 rounded-full border-2 border-green-500"
             />
             <div className="flex-1">
               <div className="flex items-center">
-                <span className="font-bold text-purple-700">"Moana"</span>
+                <span className="font-bold text-purple-700">User</span>
                 {/* <span className="ml-2 text-xs text-purple-900">
                   {message.timestamp.toLocaleTimeString()}
                 </span> */}

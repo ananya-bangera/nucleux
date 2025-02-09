@@ -38,9 +38,6 @@ export const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/leaderboard">
-              <p className="font-semibold hover:underline">Leaderboard</p>
-            </Link>
             <ConnectButton.Custom>
               {({
                 account,
@@ -73,12 +70,6 @@ export const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-      
-                <DropdownMenuItem className="focus:bg-gray-100" asChild>
-                  <Link href="/leaderboard" className="w-full">
-                    Leaderboard
-                  </Link>
-                </DropdownMenuItem>
                 <DropdownMenuItem className="focus:bg-gray-100">
                   <ConnectButton.Custom>
                     {({
